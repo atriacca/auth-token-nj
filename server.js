@@ -4,14 +4,16 @@ require('dotenv').config()  // Creates the abillity to use .env files
 const morgan = require("morgan")
 const mongoose = require('mongoose')
 const expressJwt = require('express-jwt') // Gatekeeper/Security checkpoint
+const path = require("path")
 const PORT = process.env.PORT || 7000
 
 // Global middleware
 app.use(express.json())
 app.use(morgan('dev'))
+app.use(express.static(path.join(__dirname, "client", "build")))
 
 // DB connect
-mongoose.connect(
+mongoose.connect(process.env.MONGODB_URI ||
     "mongodb://localhost:27017/auth-nate",
     {useNewUrlParser: true},
     () => console.log("connected to the DB")
@@ -35,5 +37,8 @@ app.use((err, req, res, next) => {
     return res.status(500).send({errMsg: err.message})
 })
 
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+})
 // Server
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`))
