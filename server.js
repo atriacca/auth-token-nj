@@ -12,7 +12,7 @@ app.use(morgan('dev'))
 
 // DB connect
 mongoose.connect(
-    "mongodb://localhost:27017/token-auth-1",
+    "mongodb://localhost:27017/auth-nate",
     {useNewUrlParser: true},
     () => console.log("connected to the DB")
 )
